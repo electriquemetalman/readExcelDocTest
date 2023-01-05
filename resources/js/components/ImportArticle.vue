@@ -22,10 +22,18 @@ export default {
         return { 
             selectedFile: null,
             loading: false,
-            fileList: null
+            Notifiad: null,
+            showIcon: false
         }
     },
     methods: {
+        open() {
+            this.$notify.success({
+                title: 'Success',
+                message: 'Ceci est un message de succès',
+                offset: 100
+            });
+        },
         excelFileSelected(event) {
             this.selectedFile = event.target.files[0]   
         },
@@ -34,7 +42,11 @@ export default {
             this.loading = true;
             let fd = new FormData(); 
             fd.append('file', this.selectedFile, this.selectedFile.name);
-            this.axios.post('http://localhost:8000/api/article/import', fd).then(response => (this.$router.push({ name: 'home' })))
+            this.axios.post('http://localhost:8000/api/article/import', fd).then(response => (this.$router.push({ name: 'home' }), this.$notify.success({
+                title: 'Success',
+                message: 'le fichier '+this.selectedFile.name+' a ete importer avec succes',
+                offset: 100
+            }) ))
                 .catch(err => console.log(err))
                 .finally(() => this.loadin = false)
         }

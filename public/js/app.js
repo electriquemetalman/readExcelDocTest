@@ -7009,17 +7009,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      articles: []
+      articles: [],
+      loading: false
     };
   },
   created: function created() {
     var _this = this;
+    this.loading = true;
     this.axios.get('http://localhost:8000/api/articles').then(function (response) {
       _this.articles = response.data;
+      _this.loading = false;
     });
   }
 });
@@ -7090,10 +7112,18 @@ __webpack_require__.r(__webpack_exports__);
     return {
       selectedFile: null,
       loading: false,
-      fileList: null
+      Notifiad: null,
+      showIcon: false
     };
   },
   methods: {
+    open: function open() {
+      this.$notify.success({
+        title: 'Success',
+        message: 'Ceci est un message de succès',
+        offset: 100
+      });
+    },
     excelFileSelected: function excelFileSelected(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -7105,6 +7135,10 @@ __webpack_require__.r(__webpack_exports__);
       this.axios.post('http://localhost:8000/api/article/import', fd).then(function (response) {
         return _this.$router.push({
           name: 'home'
+        }), _this.$notify.success({
+          title: 'Success',
+          message: 'le fichier ' + _this.selectedFile.name + ' a ete importer avec succes',
+          offset: 100
         });
       })["catch"](function (err) {
         return console.log(err);
@@ -92948,52 +92982,61 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h2", { staticClass: "text-center" }, [_vm._v("Articles List")]),
-    _vm._v(" "),
-    _c("table", { staticClass: "table" }, [
-      _vm._m(0),
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "text-center" }, [_vm._v("Articles List")]),
       _vm._v(" "),
       _c(
-        "tbody",
-        _vm._l(_vm.articles, function (article) {
-          return _c("tr", [
-            _c("td", [_vm._v(_vm._s(article.id))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(article.code))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(article.nom))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(article.description))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(article.quantité))]),
-          ])
-        }),
-        0
+        "el-table",
+        {
+          directives: [
+            {
+              name: "loading",
+              rawName: "v-loading",
+              value: _vm.loading,
+              expression: "loading",
+            },
+          ],
+          staticStyle: { width: "100%" },
+          attrs: {
+            "element-loading-text": "Loading...",
+            "element-loading-spinner": "el-icon-loading",
+            "element-loading-background": "rgba(0, 0, 0, 0.8)",
+            data: _vm.articles,
+            height: "250",
+          },
+        },
+        [
+          _c("el-table-column", {
+            attrs: { prop: "id", label: "ID", width: "180" },
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "code", label: "Code", width: "180" },
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "nom", label: "Nom", width: "180" },
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "description", label: "Description" },
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "quantité", label: "Quantite" },
+          }),
+          _vm._v(" "),
+          _c("el-table-column", { attrs: { prop: "image", label: "Image" } }),
+        ],
+        1
       ),
-    ]),
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("code")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("nom")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("description")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("quantite")]),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
