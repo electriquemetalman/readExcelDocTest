@@ -7106,6 +7106,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -7144,6 +7152,19 @@ __webpack_require__.r(__webpack_exports__);
         return console.log(err);
       })["finally"](function () {
         return _this.loadin = false;
+      });
+    },
+    submitUpload: function submitUpload() {
+      this.loading = true;
+      this.$refs.upload.submit();
+      this.loading = false;
+      this.$router.push({
+        name: 'home'
+      });
+      this.$notify.success({
+        title: 'Success',
+        message: 'le fichier ' + this.name + ' a ete importer avec succes',
+        offset: 100
       });
     }
   }
@@ -93131,53 +93152,56 @@ var render = function () {
     _c("h3", { staticClass: "text-center" }, [_vm._v("Import Articles")]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c(
-          "form",
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "btn btn-primary",
-                  staticStyle: { margin: "5px" },
-                  attrs: { href: "" },
-                },
-                [
-                  _vm._v("Upload file "),
-                  _c("i", { staticClass: "el-icon-upload el-icon-right" }),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "btn btn-denger",
-                    staticStyle: { display: "none" },
-                    attrs: { type: "file", name: "file" },
-                    on: { change: _vm.excelFileSelected },
-                  }),
-                ]
-              ),
-            ]),
-            _vm._v(" "),
-            _c(
-              "el-button",
-              {
-                staticStyle: { margin: "5px" },
-                attrs: { type: "primary", loading: _vm.loading },
-                on: {
-                  click: function ($event) {
-                    $event.preventDefault()
-                    return _vm.importArticle.apply(null, arguments)
-                  },
-                },
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [
+          _c(
+            "el-upload",
+            {
+              ref: "upload",
+              staticClass: "upload-demo",
+              attrs: {
+                drag: "",
+                accept: "xlsx",
+                action: "http://localhost:8000/api/article/import",
+                "auto-upload": false,
               },
-              [
-                _vm._v("Import file "),
-                _c("i", { staticClass: "el-icon-document-add" }),
-              ]
-            ),
-          ],
-          1
-        ),
-      ]),
+            },
+            [
+              _c("i", { staticClass: "el-icon-upload" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "el-upload__text" }, [
+                _vm._v("Déposer le fichiers ici ou"),
+                _c("em", [_vm._v("cliquez pour envoyer")]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "el-upload__tip",
+                  attrs: { slot: "tip" },
+                  slot: "tip",
+                },
+                [_vm._v("Fichiers xlsx")]
+              ),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "el-button",
+            {
+              attrs: { type: "success", loading: _vm.loading },
+              on: { click: _vm.submitUpload },
+            },
+            [
+              _vm._v("Import File "),
+              _c("i", { staticClass: "el-icon-document-add" }),
+            ]
+          ),
+        ],
+        1
+      ),
     ]),
   ])
 }

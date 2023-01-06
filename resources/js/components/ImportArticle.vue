@@ -2,7 +2,7 @@
     <div>
         <h3 class="text-center">Import Articles</h3>
         <div class="row">
-            <div class="col-md-6">
+            <!--<div class="col-md-6">
                 <form>
                     <div class="form-group">
                         <label href="" class="btn btn-primary" style="margin:5px">Upload file <i class="el-icon-upload el-icon-right"></i>
@@ -11,7 +11,15 @@
                     </div>
                     <el-button type="primary" :loading=loading style="margin:5px" @click.prevent="importArticle">Import file <i class="el-icon-document-add"></i></el-button>
                 </form>
-            </div>
+            </div>-->
+            <div class="col-md-6">
+                <el-upload class="upload-demo" drag ref="upload" accept="xlsx" action="http://localhost:8000/api/article/import" :auto-upload="false">
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">Déposer le fichiers ici ou<em>cliquez pour envoyer</em></div>
+                    <div class="el-upload__tip" slot="tip">Fichiers xlsx</div>
+                </el-upload>
+                <el-button type="success" :loading=loading @click="submitUpload">Import File <i class="el-icon-document-add"></i></el-button>
+            </div>    
         </div>
     </div>
 </template>
@@ -49,6 +57,17 @@ export default {
             }) ))
                 .catch(err => console.log(err))
                 .finally(() => this.loadin = false)
+        },
+        submitUpload() {
+            this.loading = true;
+            this.$refs.upload.submit();
+            this.loading = false;
+            this.$router.push({ name: 'home' })
+            this.$notify.success({
+                title: 'Success',
+                message: 'le fichier ' + this.name + ' a ete importer avec succes',
+                offset: 100
+            })
         }
     }
 } 
